@@ -1,1 +1,1 @@
-# redordead
+# redordead [![Build Status](https://travis-ci.org/rbreslow/redordead.svg?branch=master)](https://travis-ci.org/rbreslow/redordead) 
