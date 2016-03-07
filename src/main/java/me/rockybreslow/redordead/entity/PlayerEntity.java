@@ -11,19 +11,18 @@ public class PlayerEntity extends Entity {
         this.velocity = new PVector(0, 0);
     }
 
+    public boolean isGrounded() {
+        return (int) position.y == parent.height - image.height;
+    }
+
     @Override
-    public void move() {
-        velocity.add(gravity);
-        position.add(velocity);
-
-        velocity.mult(.75f);
-
+    public void update() {
         if ((position.x > parent.width - image.width) || (position.x < 0)) {
-            velocity.x = velocity.x * -1;
+            position.x = position.x < 0 ? parent.width - image.width : 0;
         }
 
         if (position.y > parent.height - image.height) {
-            velocity.y = (float) (velocity.y * -0.95);
+            velocity.y = 0;
             position.y = parent.height - image.height;
         }
     }

@@ -5,14 +5,11 @@ import processing.core.PImage;
 import processing.core.PVector;
 
 public abstract class Entity {
-    public static final PVector gravity = new PVector(0, 4f);
-    public static final PVector leftAcceleration = new PVector(-4f, 0);
-    public static final PVector rightAcceleration = new PVector(4f, 0);
-    public static final PVector upAcceleration = new PVector(0, -35f);
+    public final PVector gravity = new PVector(0, .5f);
 
-    protected PApplet parent;
+    public PApplet parent;
 
-    protected PImage image;
+    public PImage image;
 
     public PVector position;
     public PVector velocity;
@@ -24,8 +21,8 @@ public abstract class Entity {
     }
 
     public void display() {
-        parent.image(image, position.x, position.y, image.height, image.width);
+        parent.image(image, position.x, position.y, image.width, image.height);
     }
 
-    public abstract void move();
+    public abstract void update();
 }
