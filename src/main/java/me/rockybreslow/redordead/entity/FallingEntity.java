@@ -1,5 +1,6 @@
 package me.rockybreslow.redordead.entity;
 
+import me.rockybreslow.redordead.GameManager;
 import me.rockybreslow.redordead.util.ImageLoader;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -36,6 +37,12 @@ public class FallingEntity extends PhysicsEntity {
         super.onRegistration(applet);
 
         position.x = (float) (Math.random() * getPApplet().width);
+
+        if(Math.random() < 0.5) {
+            position.y += Math.random() * 30;
+        } else {
+            position.y -= Math.random() * 30;
+        }
     }
 
     /**
@@ -45,23 +52,24 @@ public class FallingEntity extends PhysicsEntity {
     public void onFrame() {
         PApplet applet = getPApplet();
 
-        /*applet.pushMatrix();
+        if(GameManager.instance.score > 20000) {
+            applet.pushMatrix();
 
-        float transformX = position.x + (width / 2);
-        float transformY = position.y + (height / 2);
+            float transformX = position.x + (width / 2);
+            float transformY = position.y + (height / 2);
 
-        applet.translate(transformX, transformY);
-        applet.rotate(PApplet.radians(this.angle));
-        applet.translate(-width / 2, -height / 2);
+            applet.translate(transformX, transformY);
+            applet.rotate(PApplet.radians(this.angle));
+            applet.translate(-width / 2, -height / 2);
 
-        applet.image(ImageLoader.getInstance(applet).get(imagePath), 0, 0, width, height);
+            applet.tint(255, alpha);
+            applet.image(ImageLoader.getInstance(applet).get(imagePath), 0, 0, width, height);
 
-        applet.popMatrix();*/
-
-        applet.tint(255, alpha);
-
-        applet.image(ImageLoader.getInstance(applet).get(imagePath),position.x, position.y, width, height);
-
+            applet.popMatrix();
+        } else {
+            applet.tint(255, alpha);
+            applet.image(ImageLoader.getInstance(applet).get(imagePath), position.x, position.y, width, height);
+        }
     }
 
     /**

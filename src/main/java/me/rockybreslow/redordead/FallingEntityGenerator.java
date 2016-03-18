@@ -17,6 +17,10 @@ public class FallingEntityGenerator {
         this.generationTimer = 0;
     }
 
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+
     public List<FallingEntity> generateEntities() {
         generationTimer--;
 
@@ -45,17 +49,17 @@ public class FallingEntityGenerator {
                     fallingEntity = new FallingEntity(128, 60, "materials/peso.png", 800);
                     break;
                 case 5:
-                    fallingEntity = new FallingEntity(108, 128, "materials/man.png", 800);
-                    break;
-                case 6:
-                    fallingEntity = new FallingEntity(95, 128, "materials/uncle_sam.png", -800);
+                    fallingEntity = new FallingEntity(108, 128, "materials/man.png", 1000);
                     break;
                 // Western Ideals
+                case 6:
+                    fallingEntity = new FallingEntity(95, 128, "materials/uncle_sam.png", -1000);
+                    break;
                 case 7:
-                    fallingEntity = new FallingEntity(128, 114, "materials/west/mcdonald.png", -800);
+                    fallingEntity = new FallingEntity(128, 114, "materials/west/mcdonald.png", -1000);
                     break;
                 case 8:
-                    fallingEntity = new FallingEntity(128, 128, "materials/west/starbucks.png", -800);
+                    fallingEntity = new FallingEntity(128, 128, "materials/west/starbucks.png", -1000);
                     break;
                 case 9:
                     fallingEntity = new FallingEntity(128, 128, "materials/west/target.png", -800);
@@ -72,7 +76,7 @@ public class FallingEntityGenerator {
         }
 
         if((int) (Math.random() * 10) == (int) (Math.random() * 10)) {
-            FallingEntity fallingEntityBoss = new FallingEntity(345, 128, "materials/west/pentagon.png", -800);
+            FallingEntity fallingEntityBoss = new FallingEntity(345, 128, "materials/west/pentagon.png", -1500);
             ret.add(fallingEntityBoss);
         }
 

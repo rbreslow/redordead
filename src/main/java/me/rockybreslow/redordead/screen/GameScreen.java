@@ -31,7 +31,7 @@ public class GameScreen extends Screen {
         PApplet applet = screenManager.getApplet();
 
         entityManager = new EntityManager<>(applet);
-        fallingEntityGenerator = new FallingEntityGenerator(60);
+        fallingEntityGenerator = new FallingEntityGenerator(100);
         statueOfLibertyEntityGenerator = new StatueOfLibertyEntityGenerator(applet);
 
         background = applet.loadImage("materials/background2.jpg");
@@ -90,7 +90,7 @@ public class GameScreen extends Screen {
                 if(!fallingEntity.didScore) {
                     GameManager.instance.score += Math.abs(fallingEntity.score);
                     realScore += fallingEntity.score;
-                    realScore = Math.min(realScore, 5000);
+                    realScore = Math.min(realScore, 3000);
                     fallingEntity.didScore = true;
                     if(fallingEntity.score > 0) {
                         SoundManager.playBeep();
@@ -103,6 +103,15 @@ public class GameScreen extends Screen {
                 }
 
             }
+        }
+
+        // Adjust scores
+        if(GameManager.instance.score > 30000) {
+            fallingEntityGenerator.setFrequency(30);
+        } else if(GameManager.instance.score > 20000) {
+            fallingEntityGenerator.setFrequency(50);
+        } else if(GameManager.instance.score > 10000) {
+            fallingEntityGenerator.setFrequency(80);
         }
 
         // Paint scores

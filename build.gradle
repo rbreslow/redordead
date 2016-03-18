@@ -32,7 +32,6 @@ repositories {
 dependencies {
     // Processing
     compile 'org.processing:core:3.0.1'
-    compile 'org.processing:video:3.0.1'
 
     // TinySound Dependencies
     compile 'org.jcraft:jorbis:0.0.17'
