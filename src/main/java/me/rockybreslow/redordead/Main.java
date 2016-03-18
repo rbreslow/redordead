@@ -32,7 +32,7 @@ public class Main extends PApplet {
 
         // Title of window
         surface.setTitle("Red or Dead");
-        surface.setIcon(loadImage("materials/uncle_sam.png"));
+        surface.setIcon(loadImage("materials/man.png"));
 
         // Loading text
         background(0);

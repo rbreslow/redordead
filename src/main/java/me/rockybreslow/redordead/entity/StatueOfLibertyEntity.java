@@ -1,5 +1,6 @@
 package me.rockybreslow.redordead.entity;
 
+import me.rockybreslow.redordead.SoundManager;
 import me.rockybreslow.redordead.util.ImageLoader;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -9,6 +10,8 @@ public class StatueOfLibertyEntity extends Entity {
     private long time;
     private PImage image;
     private boolean drawStatue;
+
+    public boolean dispose;
 
     public StatueOfLibertyEntity(float x) {
         super(x, 0);
@@ -59,6 +62,10 @@ public class StatueOfLibertyEntity extends Entity {
     @Override
     public void onUpdate() {
         PApplet applet = getPApplet();
+
+        if(drawStatue && System.currentTimeMillis() - time > 2000) {
+            dispose = true;
+        }
 
         // After two seconds draw the statue
         if(System.currentTimeMillis() - time > 2000 && !drawStatue) {

@@ -36,7 +36,7 @@ public class GameScreen extends Screen {
 
         background = applet.loadImage("materials/background2.jpg");
         background.resize(applet.width, applet.height);
-        scoreFont = applet.createFont("fonts/VKB KonQa_Communist.otf", 48);
+        scoreFont = applet.createFont("fonts/Roboto-Bold.ttf", 60);
 
         playerEntity = new PlayerEntity();
         entityManager.register(playerEntity);
@@ -61,11 +61,14 @@ public class GameScreen extends Screen {
 
         // Register statue of liberty entities
         for(StatueOfLibertyEntity statueOfLibertyEntity : statueOfLibertyEntityGenerator.getStatueOfLibertyEntities()) {
-            // entityManager.register(statueOfLibertyEntity);
+            entityManager.register(statueOfLibertyEntity);
         }
 
         // Destroy falling entities outside of the screen
-        entityManager.destroyIf(p -> p instanceof FallingEntity && p.position.y > applet.height - ((PhysicsEntity) p).height);
+        entityManager.destroyIf(p -> p instanceof FallingEntity && p.position.y > applet.height + (((PhysicsEntity) p).height * 2));
+
+        // Destroy disposed liberties
+        entityManager.destroyIf(p -> p instanceof StatueOfLibertyEntity && ((StatueOfLibertyEntity) p).dispose);
 
         // Update our entities
         entityManager.update();
@@ -74,7 +77,7 @@ public class GameScreen extends Screen {
         for(Entity entity : entityManager.getRegistrees()) {
             if(entity instanceof StatueOfLibertyEntity) {
                 if(((StatueOfLibertyEntity) entity).collides(playerEntity)) {
-                    // Take action on Statue of Liberty hitting player
+                    playerEntity.velocity.mult(-1);
                 }
             }
 
@@ -94,8 +97,18 @@ public class GameScreen extends Screen {
                     fallingEntity.didScore = true;
                     if(fallingEntity.score > 0) {
                         SoundManager.playBeep();
-                        if((int) (Math.random() * 4) == 1) {
+
+                        boolean yes = true;
+                        for(Entity entity2 : entityManager.getRegistrees()) {
+                            if(entity2 instanceof  StatueOfLibertyEntity) {
+                                yes = false;
+                                break;
+                            }
+
+                        }
+                        if(GameManager.instance.score > 20000 ? ((int) (Math.random() * 6) == 1) : ((int) (Math.random() * 18) == 1) && yes) {
                             statueOfLibertyEntityGenerator.generateStatueOfLibertyEntities();
+                            SoundManager.ANTHEM.play(2);
                         }
                     } else {
                         SoundManager.playDarn();
@@ -116,8 +129,12 @@ public class GameScreen extends Screen {
 
         // Paint scores
         applet.textFont(scoreFont);
+        applet.fill(255, 0, 0, 255);
         String str = "" + GameManager.instance.score;
-        applet.text(str, applet.width - applet.textWidth(str) - 10, applet.textAscent() + 10);
+        applet.fill(0);
+        applet.text(str, applet.width / 2 - applet.textWidth(str) / 2, applet.textAscent() + 10);
+        applet.fill(255);
+        applet.text(str, applet.width / 2 - applet.textWidth(str) / 2 - 2, applet.textAscent() + 10 - 2);
 
         if(realScore < 0) {
             SoundManager.GAME_MUSIC.stop();

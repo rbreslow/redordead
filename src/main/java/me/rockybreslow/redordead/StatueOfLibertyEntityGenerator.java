@@ -22,7 +22,7 @@ public class StatueOfLibertyEntityGenerator {
             return new StatueOfLibertyEntity[0];
         }
 
-        StatueOfLibertyEntity[] statueOfLibertyEntities = new StatueOfLibertyEntity[(int) (Math.random() * 10) + 1];
+        StatueOfLibertyEntity[] statueOfLibertyEntities = new StatueOfLibertyEntity[(int) (Math.random() * 12) + 2];
 
         for(int i = 0; i < statueOfLibertyEntities.length; i++) {
             statueOfLibertyEntities[i] = new StatueOfLibertyEntity((float) Math.random() * applet.width);
