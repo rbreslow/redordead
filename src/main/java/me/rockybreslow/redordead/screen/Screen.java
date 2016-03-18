@@ -1,6 +1,6 @@
 package me.rockybreslow.redordead.screen;
 
-import processing.core.PApplet;
+import processing.event.KeyEvent;
 
 public abstract class Screen {
     protected final ScreenManager screenManager;
@@ -11,7 +11,7 @@ public abstract class Screen {
 
     public abstract void onFrame();
 
-    public abstract void onKeyEvent(int code);
+    public abstract void onKeyEvent(KeyEvent event);
 
     public abstract void onKeyPressed(char c, int code);
 

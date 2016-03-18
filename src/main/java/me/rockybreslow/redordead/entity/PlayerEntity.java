@@ -44,6 +44,8 @@ public class PlayerEntity extends PhysicsEntity {
     public void onUpdate() {
         super.onUpdate();
 
+        velocity.mult(1.05f);
+
         PApplet applet = getPApplet();
 
         if((position.x > applet.width - width) || (position.x < 0)) {
@@ -63,10 +65,10 @@ public class PlayerEntity extends PhysicsEntity {
     }
 
     public void moveLeft() {
-        velocity.add(-2, 0);
+        velocity.add(-8f, 0);
     }
 
     public void moveRight() {
-        velocity.add(2, 0);
+        velocity.add(8f, 0);
     }
 }

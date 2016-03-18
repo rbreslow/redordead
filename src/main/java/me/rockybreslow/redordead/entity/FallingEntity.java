@@ -18,6 +18,7 @@ public class FallingEntity extends PhysicsEntity {
     public int alpha = 255;
     public int score;
     public boolean didScore = false;
+    private PImage image;
 
     public FallingEntity(int width, int height, String imagePath, int score) {
         super(0, -height, width, height);
@@ -43,6 +44,8 @@ public class FallingEntity extends PhysicsEntity {
         } else {
             position.y -= Math.random() * 30;
         }
+
+        image = ImageLoader.getInstance(applet).get(imagePath);
     }
 
     /**
@@ -52,28 +55,24 @@ public class FallingEntity extends PhysicsEntity {
     public void onFrame() {
         PApplet applet = getPApplet();
 
-//        if(GameManager.instance.score > 20000) {
-//            //applet.pushMatrix();
-//
-//            float transformX = position.x + (width / 2);
-//            float transformY = position.y + (height / 2);
-//
-//            applet.translate(transformX, transformY);
-//            applet.rotate(PApplet.radians(this.angle));
-//            applet.translate(-width / 2, -height / 2);
-//
-//            applet.tint(255, alpha);
-//            applet.image(ImageLoader.getInstance(applet).get(imagePath), 0, 0, width, height);
-//
-//            applet.translate(-transformX, -transformY);
-//            applet.rotate(-PApplet.radians(this.angle));
-//            applet.translate(-1 * (-width / 2), -1 * (-height / 2));
-//
-//            //applet.popMatrix();
-//        } else {
+        /*if(GameManager.instance.score > 20000) {
+           applet.pushMatrix();
+
+            float transformX = position.x + (width / 2);
+            float transformY = position.y + (height / 2);
+
+            applet.translate(transformX, transformY);
+            applet.rotate(PApplet.radians(this.angle));
+            applet.translate(-width / 2, -height / 2);
+
             applet.tint(255, alpha);
-            applet.image(ImageLoader.getInstance(applet).get(imagePath), position.x, position.y, width, height);
-       // }
+            applet.image(ImageLoader.getInstance(applet).get(imagePath), 0, 0, width, height);
+
+            applet.popMatrix();
+        } else {*/
+            applet.tint(255, alpha);
+            applet.image(image, position.x, position.y, width, height);
+        //}
     }
 
     /**

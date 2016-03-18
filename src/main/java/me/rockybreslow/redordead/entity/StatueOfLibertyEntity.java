@@ -63,18 +63,19 @@ public class StatueOfLibertyEntity extends Entity {
     public void onUpdate() {
         PApplet applet = getPApplet();
 
-        if(drawStatue && System.currentTimeMillis() - time > 2000) {
+        if(drawStatue && System.currentTimeMillis() - time > 6000) {
             dispose = true;
+            drawStatue = false;
         }
 
         // After two seconds draw the statue
-        if(System.currentTimeMillis() - time > 2000 && !drawStatue) {
+        if(System.currentTimeMillis() - time > 2000 && !drawStatue && !dispose) {
             drawStatue = true;
             position.y = applet.height;
             time = System.currentTimeMillis();
         }
 
-        if(position.y >= applet.height - image.height && drawStatue) {
+        if(position.y >= applet.height - image.height && drawStatue && !dispose) {
             position.add(new PVector(0, -20f).mult(.9f));
         }
     }

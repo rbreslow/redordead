@@ -5,6 +5,7 @@ import me.rockybreslow.redordead.util.ImageLoader;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
+import processing.event.KeyEvent;
 
 public class StoryScreen extends Screen {
     private String[] subtitles = {
@@ -30,7 +31,7 @@ public class StoryScreen extends Screen {
         background = ImageLoader.getInstance(applet).get("materials/confrence.jpg");
         background.resize(applet.width, applet.height);
 
-        font = applet.createFont("Courier New Bold", 50);
+        font = applet.createFont("fonts/Roboto-Bold.ttf", 42);
 
         SoundManager.STORY[subtitlesIndex].play(false);
         SoundManager.STORY_MUSIC.play(true, 0.2);
@@ -77,7 +78,7 @@ public class StoryScreen extends Screen {
      * {@inheritDoc}
      */
     @Override
-    public void onKeyEvent(int code) {
+    public void onKeyEvent(KeyEvent event) {
 
     }
 

@@ -114,16 +114,16 @@ public class EndScreen extends Screen {
      * {@inheritDoc}
      */
     @Override
-    public void onKeyEvent(int code) {
+    public void onKeyEvent(processing.event.KeyEvent event) {
         if(!acceptingInput) {
             return;
         }
 
-        if(code == KeyEvent.VK_BACK_SPACE && initials.length() > 0) {
+        if(event.getKeyCode() == KeyEvent.VK_BACK_SPACE && initials.length() > 0) {
             initials = initials.substring(0, initials.length() - 1);
         }
 
-        if(code == KeyEvent.VK_ENTER && initials.length() > 0) {
+        if(event.getKeyCode() == KeyEvent.VK_ENTER && initials.length() > 0) {
             saveScores(initials, GameManager.instance.score);
             acceptingInput = false;
         }

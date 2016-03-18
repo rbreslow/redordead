@@ -3,6 +3,7 @@ package me.rockybreslow.redordead.screen;
 import me.rockybreslow.redordead.SoundManager;
 import me.rockybreslow.redordead.util.ImageLoader;
 import processing.core.PImage;
+import processing.event.KeyEvent;
 
 /**
  * Created by Rocky Breslow on 3/17/2016.
@@ -16,6 +17,7 @@ public class GameOverScreen extends Screen {
         background = ImageLoader.getInstance(screenManager.getApplet()).get("materials/gameover.jpg");
         background.resize(screenManager.getApplet().width, screenManager.getApplet().height);
 
+        SoundManager.FAILURE.rewind();
         SoundManager.FAILURE.play(false);
     }
 
@@ -29,7 +31,7 @@ public class GameOverScreen extends Screen {
     }
 
     @Override
-    public void onKeyEvent(int code) {
+    public void onKeyEvent(KeyEvent event) {
 
     }
 

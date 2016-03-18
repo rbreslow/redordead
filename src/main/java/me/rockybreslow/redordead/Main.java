@@ -40,6 +40,8 @@ public class Main extends PApplet {
         // Initialize sound system
         TinySound.init();
 
+        keyRepeatEnabled = true;
+
         // Set active screen
         screenManager = new ScreenManager(this, ScreenManager.ScreenType.Menu);
     }
@@ -59,7 +61,7 @@ public class Main extends PApplet {
     public void handleKeyEvent(KeyEvent event) {
         super.handleKeyEvent(event);
 
-        screenManager.getActiveScreen().onKeyEvent(event.getKeyCode());
+        screenManager.getActiveScreen().onKeyEvent(event);
     }
 
     /**

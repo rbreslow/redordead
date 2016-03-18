@@ -148,8 +148,8 @@ public class MenuScreen extends Screen {
      * {@inheritDoc}
      */
     @Override
-    public void onKeyEvent(int code) {
-        if(code == KeyEvent.VK_SPACE || code == KeyEvent.VK_ENTER) {
+    public void onKeyEvent(processing.event.KeyEvent event) {
+        if(event.getKeyCode() == KeyEvent.VK_SPACE || event.getKeyCode() == KeyEvent.VK_ENTER) {
             SoundManager.MENU_MUSIC.stop();
             screenManager.setActiveScreen(ScreenManager.ScreenType.Story);
         }

@@ -10,8 +10,7 @@ import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PImage;
 import processing.core.PVector;
-
-import java.awt.event.KeyEvent;
+import processing.event.KeyEvent;
 
 public class GameScreen extends Screen {
     private EntityManager<Entity> entityManager;
@@ -24,6 +23,8 @@ public class GameScreen extends Screen {
     private PlayerEntity playerEntity;
 
     private int realScore;
+
+    private boolean moving;
 
     public GameScreen(ScreenManager screenManager) {
         super(screenManager);
@@ -42,6 +43,8 @@ public class GameScreen extends Screen {
         entityManager.register(playerEntity);
 
         realScore = 1000;
+
+        moving = false;
 
         SoundManager.GAME_MUSIC.play(true);
     }
@@ -67,11 +70,11 @@ public class GameScreen extends Screen {
         // Destroy falling entities outside of the screen
         entityManager.destroyIf(p -> p instanceof FallingEntity && p.position.y > applet.height + (((PhysicsEntity) p).height * 2));
 
-        // Destroy disposed liberties
-        entityManager.destroyIf(p -> p instanceof StatueOfLibertyEntity && ((StatueOfLibertyEntity) p).dispose);
-
         // Update our entities
         entityManager.update();
+
+        // Destroy disposed liberties
+        entityManager.destroyIf(p -> p instanceof StatueOfLibertyEntity && ((StatueOfLibertyEntity) p).dispose);
 
         // Calculate collisions and scoring for falling entities
         for(Entity entity : entityManager.getRegistrees()) {
@@ -98,17 +101,18 @@ public class GameScreen extends Screen {
                     if(fallingEntity.score > 0) {
                         SoundManager.playBeep();
 
-                        boolean yes = true;
-                        for(Entity entity2 : entityManager.getRegistrees()) {
-                            if(entity2 instanceof  StatueOfLibertyEntity) {
-                                yes = false;
-                                break;
+                        boolean canGenerateStatues = true;
+                        for(Entity potential : entityManager.getRegistrees()) {
+                            if(potential instanceof StatueOfLibertyEntity) {
+                                canGenerateStatues = false;
                             }
-
                         }
-                        if(GameManager.instance.score > 20000 ? ((int) (Math.random() * 6) == 1) : ((int) (Math.random() * 18) == 1) && yes) {
-                            statueOfLibertyEntityGenerator.generateStatueOfLibertyEntities();
-                            SoundManager.ANTHEM.play(2);
+
+                        if(GameManager.instance.score > 20000 && ((int) (Math.random() * 15) == 1)) {
+                            if(canGenerateStatues) {
+                                statueOfLibertyEntityGenerator.generateStatueOfLibertyEntities();
+                                SoundManager.ANTHEM.play(2);
+                            }
                         }
                     } else {
                         SoundManager.playDarn();
@@ -146,15 +150,24 @@ public class GameScreen extends Screen {
      * {@inheritDoc}
      */
     @Override
-    public void onKeyEvent(int code) {
-        switch(code) {
-            case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_A:
+    public void onKeyEvent(KeyEvent event) {
+        if(event.getAction() == KeyEvent.RELEASE) {
+            //playerEntity.velocity = new PVector();
+            return;
+        }
+
+        switch(event.getKeyCode()) {
+            case java.awt.event.KeyEvent.VK_LEFT:
+                playerEntity.moveLeft();
+                break;
+            case java.awt.event.KeyEvent.VK_A:
                 playerEntity.moveLeft();
                 break;
 
-            case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_D:
+            case java.awt.event.KeyEvent.VK_RIGHT:
+                playerEntity.moveRight();
+                break;
+            case java.awt.event.KeyEvent.VK_D:
                 playerEntity.moveRight();
                 break;
         }
