@@ -26,6 +26,8 @@ public class SoundManager {
 
     public static final Sound ANTHEM = TinySound.loadSound("sound/anthem1.ogg");
 
+    public static final Music FAILURE = TinySound.loadMusic("sound/youfailed.ogg");
+
     private static final Sound[] WOOSH = {
             TinySound.loadSound("sound/woosh/woosh_1.ogg"),
             TinySound.loadSound("sound/woosh/woosh_2.ogg"),

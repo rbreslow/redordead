@@ -22,7 +22,7 @@ public class ScreenManager {
     public Screen getActiveScreen() { return activeScreen; }
 
     public enum ScreenType {
-        Game(GameScreen.class), Menu(MenuScreen.class), Story(StoryScreen.class), End(EndScreen.class);
+        Game(GameScreen.class), Menu(MenuScreen.class), Story(StoryScreen.class), End(EndScreen.class), GameOver(GameOverScreen.class);
 
         private Class<? extends Screen> screen;
 

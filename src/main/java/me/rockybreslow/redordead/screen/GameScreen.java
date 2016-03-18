@@ -138,7 +138,7 @@ public class GameScreen extends Screen {
 
         if(realScore < 0) {
             SoundManager.GAME_MUSIC.stop();
-            screenManager.setActiveScreen(ScreenManager.ScreenType.End);
+            screenManager.setActiveScreen(ScreenManager.ScreenType.GameOver);
         }
     }
 
