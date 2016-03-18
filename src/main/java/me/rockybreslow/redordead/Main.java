@@ -1,45 +1,47 @@
 package me.rockybreslow.redordead;
 
-import me.rockybreslow.redordead.entity.Entity;
-import me.rockybreslow.redordead.entity.FallingEntity;
-import me.rockybreslow.redordead.entity.PlayerEntity;
-import me.rockybreslow.redordead.manager.EntityManager;
+import kuusisto.tinysound.TinySound;
+import me.rockybreslow.redordead.screen.ScreenManager;
+import me.rockybreslow.redordead.util.ImageLoader;
 import processing.core.PApplet;
 import processing.core.PImage;
-
-import java.awt.event.KeyEvent;
-import java.util.logging.Logger;
+import processing.event.KeyEvent;
 
 /**
  * Main class for Red or Dead.
  *
  * @author Rocky Breslow
  */
-
 public class Main extends PApplet {
-    private static final Logger logger = Logger.getLogger(Main.class.getName());
-
-    private EntityManager<Entity> entityManager = new EntityManager<>();
-    private FallingEntityGenerator fallingEntityGenerator = new FallingEntityGenerator(this, 1);
-
-    private PImage background;
-    private PlayerEntity playerEntity;
+    private ScreenManager screenManager;
 
     public static void main(String[] args) {
+        // Open Processing sketch
         PApplet.main(Main.class.getName());
+
+        // Gracefully shutdown sound system when the process ends
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                TinySound.shutdown();
+            }
+        });
     }
 
     public void setup() {
-        playerEntity = new PlayerEntity(this, "materials/player.png");
-        entityManager.register(playerEntity);
-        entityManager.register(new FallingEntity(this, "materials/cigar_128.png"));
+        frameRate(60);
 
-        background = loadImage("materials/background.jpg");
-        background.resize(width, height);
+        // Title of window
+        surface.setTitle("Red or Dead");
+        surface.setIcon(loadImage("materials/uncle_sam.png"));
 
-        background(background);
+        // Loading text
+        background(0);
 
-        frameRate(120);
+        // Initialize sound system
+        TinySound.init();
+
+        // Set active screen
+        screenManager = new ScreenManager(this, ScreenManager.ScreenType.Menu);
     }
 
     public void settings() {
@@ -47,29 +49,36 @@ public class Main extends PApplet {
     }
 
     public void draw() {
-        background(background);
-
-        fallingEntityGenerator.generate();
-        fallingEntityGenerator.update();
-
-        entityManager.update();
+        screenManager.getActiveScreen().onFrame();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void handleKeyEvent(processing.event.KeyEvent event) {
-       switch(event.getKeyCode()) {
-            case KeyEvent.VK_A:
-                playerEntity.velocity.add(-2, 0);
-                break;
-            case KeyEvent.VK_D:
-                playerEntity.velocity.add(2, 0);
-                break;
-            case KeyEvent.VK_SPACE:
-                if(playerEntity.isGrounded()) {
-                    System.out.print("Can jump");
-                    playerEntity.velocity.add(0, -20);
-                }
-                break;
-        }
+    public void handleKeyEvent(KeyEvent event) {
+        super.handleKeyEvent(event);
+
+        screenManager.getActiveScreen().onKeyEvent(event.getKeyCode());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void keyPressed(KeyEvent event) {
+        super.keyPressed(event);
+
+        screenManager.getActiveScreen().onKeyPressed(event.getKey(), event.getKeyCode());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void keyTyped(KeyEvent event) {
+        super.keyTyped(event);
+
+        screenManager.getActiveScreen().onKeyTyped(event.getKey(), event.getKeyCode());
     }
 }

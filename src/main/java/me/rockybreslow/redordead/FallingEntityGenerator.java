@@ -1,43 +1,81 @@
 package me.rockybreslow.redordead;
 
 import me.rockybreslow.redordead.entity.FallingEntity;
-import me.rockybreslow.redordead.manager.EntityManager;
-import processing.core.PApplet;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Rocky Breslow on 3/17/2016.
+ */
 public class FallingEntityGenerator {
-    private PApplet parent;
-    private EntityManager<FallingEntity> entityManager = new EntityManager<>();
-    private List<FallingEntity> fallingEntityList = new ArrayList<>();
-    public int frequency;
+    private int frequency;
+    private int generationTimer;
 
-    public FallingEntityGenerator(PApplet parent, int frequency) {
-        this.parent = parent;
+    public FallingEntityGenerator(int frequency) {
         this.frequency = frequency;
+        this.generationTimer = 0;
     }
 
-    public List<FallingEntity> generate() {
-        List<FallingEntity> product = new ArrayList<>();
+    public List<FallingEntity> generateEntities() {
+        generationTimer--;
 
-        for(int i = 0; i < frequency; i++) {
-            FallingEntity fallingEntity = new FallingEntity(parent, "materials/cigar_128.png");
-            product.add(fallingEntity);
-            fallingEntityList.add(fallingEntity);
-            entityManager.register(fallingEntity);
+        if(generationTimer > 0) {
+            return new ArrayList<>();
         }
 
-        return product;
-    }
+        List<FallingEntity> ret = new ArrayList<>();
 
-    public void update() {
-        for(FallingEntity entity : fallingEntityList) {
-            if(entity.position.y > parent.height - entity.image.height) {
-                entityManager.destroy(entity);
+        generationTimer = frequency - (int) (Math.random() * 10);
+
+        for(int i = 0; i < 4; i++) {
+            FallingEntity fallingEntity;
+
+            switch((int) (Math.random() * 10) + 1) {
+                case 1:
+                    fallingEntity = new FallingEntity(128, 21, "materials/cigar.png", 1000);
+                    break;
+                case 2:
+                    fallingEntity = new FallingEntity(128, 21, "materials/rifle.png", 800);
+                    break;
+                case 3:
+                    fallingEntity = new FallingEntity(104, 128, "materials/mao.png", 800);
+                    break;
+                case 4:
+                    fallingEntity = new FallingEntity(128, 60, "materials/peso.png", 800);
+                    break;
+                case 5:
+                    fallingEntity = new FallingEntity(108, 128, "materials/man.png", 800);
+                    break;
+                case 6:
+                    fallingEntity = new FallingEntity(95, 128, "materials/uncle_sam.png", -800);
+                    break;
+                // Western Ideals
+                case 7:
+                    fallingEntity = new FallingEntity(128, 114, "materials/west/mcdonald.png", -800);
+                    break;
+                case 8:
+                    fallingEntity = new FallingEntity(128, 128, "materials/west/starbucks.png", -800);
+                    break;
+                case 9:
+                    fallingEntity = new FallingEntity(128, 128, "materials/west/target.png", -800);
+                    break;
+                case 10:
+                    fallingEntity = new FallingEntity(128, 134, "materials/west/walmart.png", -800);
+                    break;
+                default:
+                    fallingEntity = null;
+                    break;
             }
+
+            ret.add(fallingEntity);
         }
 
-        entityManager.update();
+        if((int) (Math.random() * 10) == (int) (Math.random() * 10)) {
+            FallingEntity fallingEntityBoss = new FallingEntity(345, 128, "materials/west/pentagon.png", -800);
+            ret.add(fallingEntityBoss);
+        }
+
+        return ret;
     }
 }

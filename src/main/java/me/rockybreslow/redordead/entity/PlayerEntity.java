@@ -1,29 +1,72 @@
 package me.rockybreslow.redordead.entity;
 
+import me.rockybreslow.redordead.SoundManager;
+import me.rockybreslow.redordead.util.ImageLoader;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class PlayerEntity extends Entity {
-    public PlayerEntity(PApplet parent, String image) {
-        super(parent, image);
+public class PlayerEntity extends PhysicsEntity {
+    private int alpha = 255;
 
-        this.position = new PVector(this.parent.width / 2 - this.image.width / 2, this.parent.height - this.image.height);
-        this.velocity = new PVector(0, 0);
+    public PlayerEntity() {
+        super(0, 0, 128, 151);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onRegistration(PApplet applet) {
+        super.onRegistration(applet);
+
+        position = new PVector(applet.width / 2 - width / 2, applet.height - height);
     }
 
     public boolean isGrounded() {
-        return (int) position.y == parent.height - image.height;
+        PApplet applet = getPApplet();
+
+        return (int) position.y == applet.height - height;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void update() {
-        if ((position.x > parent.width - image.width) || (position.x < 0)) {
-            position.x = position.x < 0 ? parent.width - image.width : 0;
+    public void onFrame() {
+        getPApplet().tint(255, alpha);
+        getPApplet().image(ImageLoader.getInstance(getPApplet()).get("materials/player.png"), position.x, position.y, width, height);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+
+        PApplet applet = getPApplet();
+
+        if((position.x > applet.width - width) || (position.x < 0)) {
+            position.x = position.x < 0 ? applet.width - width : 0;
+            alpha = 0;
+            SoundManager.playWoosh();
         }
 
-        if (position.y > parent.height - image.height) {
-            velocity.y = 0;
-            position.y = parent.height - image.height;
+        if(alpha < 255) {
+            alpha += 5;
         }
+
+        if (position.y > applet.height - height) {
+            velocity.y = 0;
+            position.y = applet.height - height;
+        }
+    }
+
+    public void moveLeft() {
+        velocity.add(-2, 0);
+    }
+
+    public void moveRight() {
+        velocity.add(2, 0);
     }
 }
